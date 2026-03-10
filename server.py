@@ -1,28 +1,15 @@
 from fastapi import FastAPI
-import random
+from kiteconnect import KiteConnect, KiteTicker
+import os
 
 app = FastAPI()
 
-# demo data (later will connect Zerodha)
-stocks = [
-"RELIANCE","TCS","INFY","SBIN",
-"HDFCBANK","ICICIBANK","ITC"
-]
+API_KEY = os.getenv("plxxli4ca3wmhteb")
+ACCESS_TOKEN = os.getenv("eMM4fA2O46trtW5QCESvSZbKF5E4er6K")
 
-@app.get("/spikes")
-def spikes():
+kite = KiteConnect(api_key=API_KEY)
+kite.set_access_token(ACCESS_TOKEN)
 
-    data=[]
-
-    for s in stocks:
-
-        move=round(random.uniform(-2,2),2)
-
-        data.append({
-        "symbol":s,
-        "price":round(random.uniform(500,3000),2),
-        "move":move,
-        "timeframe":"30s"
-        })
-
-    return data
+@app.get("/")
+def home():
+    return {"status":"running"}
